@@ -75,7 +75,25 @@ app.listen(3030,()=>{
     console.log("Server started")
 })
 
-
+//create a post
+app.post("/create",async(req,res)=>{
+    let input=req.body
+    let token =req.headers.token
+    //need to verify while creating a post pr else anyone can post anything 
+    Jwt.verify(token,"blogapp",async(eroor,decoded)=>{
+        if (decoded && decoded.email) {
+           let result= new postModel(input)//if authentication sucess
+            await result.save()
+            res.json({"status":"success"})
+        } else {
+            res.json({"status":"Invalid authentication"})
+        }
+    })
+    })
+    
+    app.listen(3030,()=>{
+        console.log("Server started")
+    })
 
 
 
