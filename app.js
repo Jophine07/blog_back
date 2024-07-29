@@ -45,6 +45,36 @@ let result=userModel.find({email:req.body.email}).then(
 })
 
 
+//SIGNUP
+app.post("/signUp",(req,res)=>{
+    let input=req.body
+    let hashedPassword=Bcrypt.hashSync(req.body.password,10)
+    console.log(hashedPassword)
+    req.body.password=hashedPassword
+    userModel.find({email:req.body.email}).then(
+        (items)=>{
+            if(items.length>0)
+            {
+                res.json({"status":"Email id already existing"})
+            }
+            else{
+                let result=new userModel(input)
+                result.save()
+                res.json({"status":"Success"})
+            }
+        }
+    ).catch(
+        (error)=>{
+
+        }
+    )
+
+})
+
+app.listen(3030,()=>{
+    console.log("Server started")
+})
+
 
 
 
