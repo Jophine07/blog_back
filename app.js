@@ -96,6 +96,28 @@ app.post("/create",async(req,res)=>{
     })
 
 
-
+//viewALL
+app.post("/viewall",(req,res)=>{
+    let token=req.headers.token
+    Jwt.verify(token,"blogapp",(error,decoded)=>{
+    if (decoded && decoded.email) {
+        postModel.find().then(
+            (items)=>{
+                res.json(items)
+            }
+        ).catch(
+            (error)=>{
+                res.json({"status":"error"})
+            }
+        )
+    } else {
+        res.json({"status":"invalid authorization"})
+    }
+    })
+    })
+    
+    app.listen(3030,()=>{
+        console.log("Server started")
+    })
 
 
